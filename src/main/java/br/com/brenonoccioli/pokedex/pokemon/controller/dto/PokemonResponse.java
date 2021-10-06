@@ -20,7 +20,7 @@ public class PokemonResponse {
         //No momento não encontrei forma melhor retornar o response da evolução
         //sem entrar em loop infinito ou nullPointer
         if(pokemon.getEvoluiPara() != null){
-            evoluiPara = adicionaEvolução(new PokemonResponse(pokemon.getEvoluiPara()));
+            evoluiPara = adicionaEvolucao(new PokemonResponse(pokemon.getEvoluiPara()));
         }
     }
 
@@ -36,7 +36,7 @@ public class PokemonResponse {
         return evoluiPara;
     }
 
-    public PokemonResponse adicionaEvolução(PokemonResponse evoluiPara) {
+    private PokemonResponse adicionaEvolucao(PokemonResponse evoluiPara) {
         return this.evoluiPara = evoluiPara;
     }
 }

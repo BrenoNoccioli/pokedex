@@ -56,7 +56,11 @@ public class Pokemon {
     }
 
     //Para definir uma evolução após o cadastramento
-    public void setEvoluiPara(Pokemon evoluiPara) {
+    public void atualizaEvoluiPara(Pokemon evoluiPara) {
         this.evoluiPara = evoluiPara;
+    }
+
+    public void atualizaNome(String novoNome) {
+        this.nome = novoNome;
     }
 }

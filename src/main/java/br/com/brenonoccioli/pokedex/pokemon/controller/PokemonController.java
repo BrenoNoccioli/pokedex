@@ -1,17 +1,13 @@
 package br.com.brenonoccioli.pokedex.pokemon.controller;
 
-import br.com.brenonoccioli.pokedex.pokemon.controller.dto.AtualizaEvolucaoRequest;
 import br.com.brenonoccioli.pokedex.pokemon.controller.dto.PokemonRequest;
 import br.com.brenonoccioli.pokedex.pokemon.controller.dto.PokemonResponse;
 import br.com.brenonoccioli.pokedex.pokemon.model.Pokemon;
+import br.com.brenonoccioli.pokedex.pokemon.model.Tipo;
 import br.com.brenonoccioli.pokedex.pokemon.repository.PokemonRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
@@ -58,22 +54,35 @@ public class PokemonController {
         return ResponseEntity.ok(response);
     }
 
+    @Transactional
+    @PostMapping("/atualiza/{nomePokemon}")
+    public ResponseEntity<?> atualiza(@PathVariable String nomePokemon,
+                                      @RequestParam(defaultValue = "") String novaEvolucao,
+                                      @RequestParam(defaultValue = "") String novoNome,
+                                      @RequestParam(defaultValue = "") String tipo){
 
-    @PostMapping("/atualiza/{nome}")
-    public ResponseEntity<?> atualizaEvolucao(@PathVariable String nome, @RequestBody AtualizaEvolucaoRequest request){
-        Optional<Pokemon> pokemonOptional = repository.findByNome(nome);
+        Optional<Pokemon> pokemonOptional = repository.findByNome(nomePokemon);
         if(pokemonOptional.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-
         Pokemon pokemon = pokemonOptional.get();
-        Optional<Pokemon> evolucao = repository.findByNome(request.getNome());
-        if(evolucao.isEmpty()){
-            return ResponseEntity.notFound().build();
+
+        if(!novaEvolucao.isBlank()){
+            Optional<Pokemon> evolucao = repository.findByNome(novaEvolucao);
+            if(evolucao.isEmpty()){
+                return ResponseEntity.status(404).body("Evolução ainda não cadastrada");
+            }
+            pokemon.atualizaEvoluiPara(evolucao.get());
         }
 
-        pokemon.setEvoluiPara(evolucao.get());
-        repository.save(pokemon);
+        if(!novoNome.isBlank()){
+            pokemon.atualizaNome(novoNome);
+        }
+
+        if(!tipo.toString().isBlank()){
+            pokemon.getTipo().clear();
+            pokemon.getTipo().add(Tipo.valueOf(tipo));
+        }
 
         return ResponseEntity.ok(new PokemonResponse(pokemon));
     }
