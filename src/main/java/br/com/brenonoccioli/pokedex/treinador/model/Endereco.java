@@ -37,4 +37,16 @@ public class Endereco {
     public String getCep() {
         return cep;
     }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
 }

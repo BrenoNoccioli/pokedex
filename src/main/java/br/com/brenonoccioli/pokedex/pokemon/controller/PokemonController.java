@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -23,7 +22,8 @@ public class PokemonController {
     PokemonRepository repository;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<PokemonResponse> cadastraPokemon(@RequestBody @Valid PokemonRequest request, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<PokemonResponse> cadastraPokemon(@RequestBody @Valid PokemonRequest request,
+                                                           UriComponentsBuilder uriBuilder){
         Pokemon pokemon = request.toModel(repository);
         repository.save(pokemon);
 
@@ -55,7 +55,7 @@ public class PokemonController {
     }
 
     @Transactional
-    @PostMapping("/atualiza/{nomePokemon}")
+    @PutMapping("/atualiza/{nomePokemon}")
     public ResponseEntity<?> atualiza(@PathVariable String nomePokemon,
                                       @RequestParam(defaultValue = "") String novaEvolucao,
                                       @RequestParam(defaultValue = "") String novoNome,
@@ -76,7 +76,7 @@ public class PokemonController {
         }
 
         if(!novoNome.isBlank()){
-            pokemon.atualizaNome(novoNome);
+            pokemon.setNome(novoNome);
         }
 
         if(!tipo.toString().isBlank()){
@@ -85,5 +85,18 @@ public class PokemonController {
         }
 
         return ResponseEntity.ok(new PokemonResponse(pokemon));
+    }
+
+    @DeleteMapping("/{nome}")
+    public ResponseEntity<?> deletaPokemon(@PathVariable String nome){
+        Optional<Pokemon> pokemonOptional = repository.findByNome(nome);
+        if(pokemonOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Pokemon pokemon = pokemonOptional.get();
+        repository.delete(pokemon);
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,5 +1,7 @@
 package br.com.brenonoccioli.pokedex.treinador.model;
 
+import br.com.brenonoccioli.pokedex.pokemon.model.Pokemon;
+
 import javax.persistence.*;
 
 import java.time.LocalDate;
@@ -55,5 +57,15 @@ public class Treinador {
         return idade;
     }
 
+    public Endereco getEndereco() {
+        return endereco;
+    }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
 }

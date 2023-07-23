@@ -60,7 +60,7 @@ public class Pokemon {
         this.evoluiPara = evoluiPara;
     }
 
-    public void atualizaNome(String novoNome) {
+    public void setNome(String novoNome) {
         this.nome = novoNome;
     }
 }
