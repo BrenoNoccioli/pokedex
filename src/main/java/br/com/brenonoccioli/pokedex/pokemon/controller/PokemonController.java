@@ -5,6 +5,7 @@ import br.com.brenonoccioli.pokedex.pokemon.controller.dto.PokemonResponse;
 import br.com.brenonoccioli.pokedex.pokemon.model.Pokemon;
 import br.com.brenonoccioli.pokedex.pokemon.model.Tipo;
 import br.com.brenonoccioli.pokedex.pokemon.repository.PokemonRepository;
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
